@@ -1290,7 +1290,7 @@ footer {
           <img
             id="hero-photo"
             class="photo-img"
-            src="https://drive.google.com/uc?export=view&id=1k-qVsR-7oFA2_iis7g7Ztt3OZeifGooe"
+            src="photo.jpg"
             alt="Photo professionnelle de GNANGBA Sam Samuel, Data Analyst"
             loading="eager"
           >
@@ -1804,21 +1804,18 @@ footer {
         directement pour recevoir une version adaptée à votre offre.
       </p>
       <div class="cv-btn-group">
-    
         <a
           id="cv-download-btn"
-          href="https://drive.google.com/uc?export=download&id=16Gnd5t8XtNe0ZvfzSbR9Wzw1bv1ao_yO"
+          href="CV_GNANGBA_Sam_Samuel.pdf"
           class="btn btn-fill"
-          download
-          target="_blank"
-          rel="noopener noreferrer"
+          download="CV_GNANGBA_Sam_Samuel.pdf"
           aria-label="Télécharger le CV en PDF"
         >
           <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
           Télécharger le CV (PDF)
         </a>
         <a
-          href="https://drive.google.com/file/d/16Gnd5t8XtNe0ZvfzSbR9Wzw1bv1ao_yO/view?usp=sharing"
+          href="CV.pdf"
           class="btn"
           target="_blank"
           rel="noopener noreferrer"
@@ -1834,8 +1831,7 @@ footer {
       </div>
       <div class="cv-security-note">
         <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-        CV hébergé sur Google Drive · Accès public en lecture seule
-        &nbsp;·&nbsp; Seul le propriétaire peut modifier le fichier source
+        Document officiel mis à jour &nbsp;·&nbsp; Accès direct en lecture et téléchargement
       </div>
     </div>
   </div>
@@ -1994,10 +1990,8 @@ footer {
 (function() {
   'use strict';
 
-  /* ---- PHOTO DE PROFIL ----
-     URL directe issue de votre dossier Google Drive
-  ---------------------------------------------------------------- */
-  var PHOTO_SRC = 'https://drive.google.com/uc?export=view&id=1k-qVsR-7oFA2_iis7g7Ztt3OZeifGooe';
+  /* ---- PHOTO DE PROFIL ---- */
+  var PHOTO_SRC = 'photo.jpg.jpg'; 
   var photoEl = document.getElementById('hero-photo');
   if (photoEl) {
     photoEl.src = PHOTO_SRC;
