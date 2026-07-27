@@ -1893,7 +1893,10 @@ footer {
       </div>
       <!-- Form -->
       <div data-aos="fade-left" data-aos-delay="100">
-        <form id="contact-form" class="contact-form" novalidate aria-label="Formulaire de contact">
+        <form id="contact-form" class="contact-form" action="https://formspree.io/f/xojgpqnv" method="POST" novalidate aria-label="Formulaire de contact">
+          <!-- Champs spéciaux Formspree -->
+          <input type="hidden" name="_subject" value="Nouveau message depuis le Portfolio (Sam Samuel GNANGBA)">
+          
           <div class="form-group">
             <label for="cf-name">Nom complet <span aria-hidden="true">*</span></label>
             <input
@@ -1934,7 +1937,7 @@ footer {
           <!-- Honeypot anti-spam -->
           <div style="display:none;" aria-hidden="true">
             <label for="cf-website">Ne pas remplir</label>
-            <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off">
+            <input type="text" id="cf-website" name="_gotcha" tabindex="-1" autocomplete="off">
           </div>
           <div class="form-feedback" id="form-feedback" role="alert" aria-live="polite"></div>
           <button type="submit" class="btn btn-fill" id="form-submit-btn">
@@ -2112,24 +2115,58 @@ footer {
     }
   }, { passive: true });
 
-  /* ---- FORMULAIRE DE CONTACT ---- */
+  /* ---- FORMULAIRE DE CONTACT (FORMSPREE AJAX) ---- */
   var contactForm = document.getElementById('contact-form');
   var formFeedback = document.getElementById('form-feedback');
-  if (contactForm && formFeedback) {
+  var submitBtn = document.getElementById('form-submit-btn');
+
+  if (contactForm && formFeedback && submitBtn) {
     contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
+      
+      // Verification Honeypot Anti-Spam
       var honeypot = document.getElementById('cf-website');
       if (honeypot && honeypot.value !== '') {
-        return; // Anti-spam
+        return; 
       }
 
-      formFeedback.className = 'form-feedback success';
-      formFeedback.textContent = 'Merci ! Votre message a été envoyé avec succès. Je vous répondrai sous 24h à 48h.';
-      contactForm.reset();
+      // Changement d'état du bouton pendant l'envoi
+      var originalBtnText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Envoi en cours...';
+      formFeedback.style.display = 'none';
 
-      setTimeout(function() {
-        formFeedback.style.display = 'none';
-      }, 6000);
+      var data = new FormData(contactForm);
+
+      fetch(contactForm.action, {
+        method: contactForm.method,
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(function(response) {
+        if (response.ok) {
+          formFeedback.className = 'form-feedback success';
+          formFeedback.textContent = 'Merci ! Votre message a été envoyé avec succès. Je vous répondrai sous 24h à 48h.';
+          contactForm.reset();
+        } else {
+          response.json().then(function(data) {
+            formFeedback.className = 'form-feedback error';
+            if (Object.hasOwn(data, 'errors')) {
+              formFeedback.textContent = data["errors"].map(function(error) { return error["message"]; }).join(", ");
+            } else {
+              formFeedback.textContent = 'Une erreur est survenue lors de l\'envoi du formulaire. Veuillez réessayer.';
+            }
+          });
+        }
+      }).catch(function(error) {
+        formFeedback.className = 'form-feedback error';
+        formFeedback.textContent = 'Erreur de connexion. Veuillez vérifier votre réseau ou me contacter directement par e-mail.';
+      }).finally(function() {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+        formFeedback.style.display = 'block';
+      });
     });
   }
 
@@ -2146,4 +2183,3 @@ footer {
 </script>
 </body>
 </html>
-
